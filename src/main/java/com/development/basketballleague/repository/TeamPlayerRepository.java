@@ -10,4 +10,5 @@ import java.util.List;
 public interface TeamPlayerRepository extends MongoRepository<TeamPlayer, String> {
     List<TeamPlayer> findByTeamId(String teamId);
     List<TeamPlayer> findByLeagueId(String leagueId);
+    List<TeamPlayer> findByPlayerId(String playerId);
 }

@@ -4,6 +4,7 @@ import com.development.basketballleague.dto.BatchUploadPlayersRequest;
 import com.development.basketballleague.dto.BatchUploadPlayersResponse;
 import com.development.basketballleague.model.Player;
 import com.development.basketballleague.repository.PlayerRepository;
+import com.development.basketballleague.repository.TeamPlayerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PlayerService {
     private final PlayerRepository playerRepository;
+    private final TeamPlayerRepository teamPlayerRepository;
 
     public List<Player> getAllPlayers() {
         return playerRepository.findAll();
@@ -34,6 +36,9 @@ public class PlayerService {
     }
 
     public void deletePlayer(String id) {
+        if (!teamPlayerRepository.findByPlayerId(id).isEmpty()) {
+            throw new RuntimeException("Cannot delete player: player is currently assigned to a team");
+        }
         playerRepository.deleteById(id);
     }
     

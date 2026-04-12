@@ -15,6 +15,5 @@ public class Player {
     @NotBlank(message = "Player name is required")
     private String name;
     
-    @NotBlank(message = "Position is required")
     private String position;
 }
