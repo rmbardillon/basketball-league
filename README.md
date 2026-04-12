@@ -70,11 +70,13 @@ The application will start on `http://localhost:8080`
 - `GET /api/players` - Get all players
 - `GET /api/players/{id}` - Get player by ID
 - `POST /api/players` - Create new player
+- `POST /api/players/batch` - Batch upload multiple players
 - `PUT /api/players/{id}` - Update player
 - `DELETE /api/players/{id}` - Delete player
 
 ### Team Roster
 - `POST /api/roster/add-player` - Add player to team
+- `POST /api/roster/batch-add-players` - Batch add multiple players to team
 - `GET /api/roster/team/{teamId}` - Get team roster
 - `GET /api/roster/league/{leagueId}` - Get all rosters in league
 
@@ -156,6 +158,54 @@ POST /api/players
 }
 ```
 
+### Batch Upload Players
+```json
+POST /api/players/batch
+{
+  "players": [
+    {
+      "name": "John Doe",
+      "position": "Point Guard"
+    },
+    {
+      "name": "Jane Smith",
+      "position": "Shooting Guard"
+    },
+    {
+      "name": "Mike Johnson",
+      "position": "Center"
+    }
+  ]
+}
+```
+
+**Response:**
+```json
+{
+  "totalPlayers": 3,
+  "successfulUploads": 3,
+  "failedUploads": 0,
+  "uploadedPlayers": [
+    {
+      "id": "player_id_1",
+      "name": "John Doe",
+      "position": "Point Guard"
+    },
+    {
+      "id": "player_id_2",
+      "name": "Jane Smith",
+      "position": "Shooting Guard"
+    },
+    {
+      "id": "player_id_3",
+      "name": "Mike Johnson",
+      "position": "Center"
+    }
+  ],
+  "errors": []
+}
+```
+
 ### Add Player to Team
 ```json
 POST /api/roster/add-player
@@ -164,6 +214,62 @@ POST /api/roster/add-player
   "playerId": "player_id_here",
   "leagueId": "league_id_here",
   "jerseyNumber": 23
+}
+```
+
+### Batch Add Players to Team
+```json
+POST /api/roster/batch-add-players
+{
+  "teamId": "team_id_here",
+  "leagueId": "league_id_here",
+  "playerAssignments": [
+    {
+      "playerId": "player_id_1",
+      "jerseyNumber": 23
+    },
+    {
+      "playerId": "player_id_2",
+      "jerseyNumber": 10
+    },
+    {
+      "playerId": "player_id_3",
+      "jerseyNumber": 7
+    }
+  ]
+}
+```
+
+**Response:**
+```json
+{
+  "totalAssignments": 3,
+  "successfulAssignments": 3,
+  "failedAssignments": 0,
+  "addedPlayers": [
+    {
+      "id": "roster_id_1",
+      "teamId": "team_id_here",
+      "playerId": "player_id_1",
+      "leagueId": "league_id_here",
+      "jerseyNumber": 23
+    },
+    {
+      "id": "roster_id_2",
+      "teamId": "team_id_here",
+      "playerId": "player_id_2",
+      "leagueId": "league_id_here",
+      "jerseyNumber": 10
+    },
+    {
+      "id": "roster_id_3",
+      "teamId": "team_id_here",
+      "playerId": "player_id_3",
+      "leagueId": "league_id_here",
+      "jerseyNumber": 7
+    }
+  ],
+  "errors": []
 }
 ```
 

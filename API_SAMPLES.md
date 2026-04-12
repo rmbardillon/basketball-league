@@ -161,7 +161,7 @@ Authorization: Bearer <your-jwt-token>
 
 ## 3. Player Management
 
-### Create Players
+### Create Single Player
 ```bash
 POST /api/players
 Content-Type: application/json
@@ -170,6 +170,169 @@ Authorization: Bearer <your-jwt-token>
 {
   "name": "LeBron James",
   "position": "Small Forward"
+}
+```
+
+### Batch Upload Players
+```bash
+POST /api/players/batch
+Content-Type: application/json
+Authorization: Bearer <your-jwt-token>
+
+{
+  "players": [
+    {
+      "name": "LeBron James",
+      "position": "Small Forward"
+    },
+    {
+      "name": "Stephen Curry",
+      "position": "Point Guard"
+    },
+    {
+      "name": "Anthony Davis",
+      "position": "Power Forward"
+    },
+    {
+      "name": "Klay Thompson",
+      "position": "Shooting Guard"
+    },
+    {
+      "name": "Draymond Green",
+      "position": "Power Forward"
+    }
+  ]
+}
+```
+
+**Response:**
+```json
+{
+  "totalPlayers": 5,
+  "successfulUploads": 5,
+  "failedUploads": 0,
+  "uploadedPlayers": [
+    {
+      "id": "65f4d5e6f7g8h9i0j1k2l3m4",
+      "name": "LeBron James",
+      "position": "Small Forward"
+    },
+    {
+      "id": "65f5e6f7g8h9i0j1k2l3m4n5",
+      "name": "Stephen Curry",
+      "position": "Point Guard"
+    },
+    {
+      "id": "65f6f7g8h9i0j1k2l3m4n5o6",
+      "name": "Anthony Davis",
+      "position": "Power Forward"
+    },
+    {
+      "id": "65f7g8h9i0j1k2l3m4n5o6p7",
+      "name": "Klay Thompson",
+      "position": "Shooting Guard"
+    },
+    {
+      "id": "65f8h9i0j1k2l3m4n5o6p7q8",
+      "name": "Draymond Green",
+      "position": "Power Forward"
+    }
+  ],
+  "errors": []
+}
+```
+
+### Kids League Batch Upload Example
+```bash
+POST /api/players/batch
+Content-Type: application/json
+Authorization: Bearer <your-jwt-token>
+
+{
+  "players": [
+    {
+      "name": "Emma Johnson",
+      "position": "Point Guard"
+    },
+    {
+      "name": "Liam Smith",
+      "position": "Shooting Guard"
+    },
+    {
+      "name": "Olivia Brown",
+      "position": "Small Forward"
+    },
+    {
+      "name": "Noah Davis",
+      "position": "Power Forward"
+    },
+    {
+      "name": "Ava Wilson",
+      "position": "Center"
+    },
+    {
+      "name": "Ethan Miller",
+      "position": "Point Guard"
+    },
+    {
+      "name": "Sophia Garcia",
+      "position": "Shooting Guard"
+    },
+    {
+      "name": "Mason Rodriguez",
+      "position": "Small Forward"
+    },
+    {
+      "name": "Isabella Martinez",
+      "position": "Power Forward"
+    },
+    {
+      "name": "William Anderson",
+      "position": "Center"
+    }
+  ]
+}
+```
+```bash
+POST /api/players/batch
+Content-Type: application/json
+Authorization: Bearer <your-jwt-token>
+
+{
+  "players": [
+    {
+      "name": "Valid Player",
+      "position": "Point Guard"
+    },
+    {
+      "name": "",
+      "position": "Shooting Guard"
+    },
+    {
+      "name": "Another Valid Player",
+      "position": ""
+    }
+  ]
+}
+```
+
+**Response:**
+```json
+{
+  "totalPlayers": 3,
+  "successfulUploads": 1,
+  "failedUploads": 2,
+  "uploadedPlayers": [
+    {
+      "id": "65f9i0j1k2l3m4n5o6p7q8r9",
+      "name": "Valid Player",
+      "position": "Point Guard"
+    }
+  ],
+  "errors": [
+    "Player at index 1: Name is required",
+    "Player at index 2: Position is required"
+  ]
 }
 ```
 
@@ -205,7 +368,7 @@ Authorization: Bearer <your-jwt-token>
 
 ## 4. Team Roster Management
 
-### Add Players to Teams
+### Add Single Player to Team
 ```bash
 POST /api/roster/add-player
 Content-Type: application/json
@@ -216,6 +379,135 @@ Authorization: Bearer <your-jwt-token>
   "playerId": "65f4d5e6f7g8h9i0j1k2l3m4",
   "leagueId": "65f1a2b3c4d5e6f7g8h9i0j1",
   "jerseyNumber": 23
+}
+```
+
+### Batch Add Players to Team
+```bash
+POST /api/roster/batch-add-players
+Content-Type: application/json
+Authorization: Bearer <your-jwt-token>
+
+{
+  "teamId": "65f2b3c4d5e6f7g8h9i0j1k2",
+  "leagueId": "65f1a2b3c4d5e6f7g8h9i0j1",
+  "playerAssignments": [
+    {
+      "playerId": "65f4d5e6f7g8h9i0j1k2l3m4",
+      "jerseyNumber": 23
+    },
+    {
+      "playerId": "65f5e6f7g8h9i0j1k2l3m4n5",
+      "jerseyNumber": 30
+    },
+    {
+      "playerId": "65f6f7g8h9i0j1k2l3m4n5o6",
+      "jerseyNumber": 3
+    },
+    {
+      "playerId": "65f7g8h9i0j1k2l3m4n5o6p7",
+      "jerseyNumber": 11
+    },
+    {
+      "playerId": "65f8h9i0j1k2l3m4n5o6p7q8",
+      "jerseyNumber": 24
+    }
+  ]
+}
+```
+
+**Response:**
+```json
+{
+  "totalAssignments": 5,
+  "successfulAssignments": 5,
+  "failedAssignments": 0,
+  "addedPlayers": [
+    {
+      "id": "65f9i0j1k2l3m4n5o6p7q8r9",
+      "teamId": "65f2b3c4d5e6f7g8h9i0j1k2",
+      "playerId": "65f4d5e6f7g8h9i0j1k2l3m4",
+      "leagueId": "65f1a2b3c4d5e6f7g8h9i0j1",
+      "jerseyNumber": 23
+    },
+    {
+      "id": "65faj1k2l3m4n5o6p7q8r9s0",
+      "teamId": "65f2b3c4d5e6f7g8h9i0j1k2",
+      "playerId": "65f5e6f7g8h9i0j1k2l3m4n5",
+      "leagueId": "65f1a2b3c4d5e6f7g8h9i0j1",
+      "jerseyNumber": 30
+    },
+    {
+      "id": "65fbk2l3m4n5o6p7q8r9s0t1",
+      "teamId": "65f2b3c4d5e6f7g8h9i0j1k2",
+      "playerId": "65f6f7g8h9i0j1k2l3m4n5o6",
+      "leagueId": "65f1a2b3c4d5e6f7g8h9i0j1",
+      "jerseyNumber": 3
+    },
+    {
+      "id": "65fcl3m4n5o6p7q8r9s0t1u2",
+      "teamId": "65f2b3c4d5e6f7g8h9i0j1k2",
+      "playerId": "65f7g8h9i0j1k2l3m4n5o6p7",
+      "leagueId": "65f1a2b3c4d5e6f7g8h9i0j1",
+      "jerseyNumber": 11
+    },
+    {
+      "id": "65fdm4n5o6p7q8r9s0t1u2v3",
+      "teamId": "65f2b3c4d5e6f7g8h9i0j1k2",
+      "playerId": "65f8h9i0j1k2l3m4n5o6p7q8",
+      "leagueId": "65f1a2b3c4d5e6f7g8h9i0j1",
+      "jerseyNumber": 24
+    }
+  ],
+  "errors": []
+}
+```
+
+### Batch Add with Validation Errors Example
+```bash
+POST /api/roster/batch-add-players
+Content-Type: application/json
+Authorization: Bearer <your-jwt-token>
+
+{
+  "teamId": "65f2b3c4d5e6f7g8h9i0j1k2",
+  "leagueId": "65f1a2b3c4d5e6f7g8h9i0j1",
+  "playerAssignments": [
+    {
+      "playerId": "65f4d5e6f7g8h9i0j1k2l3m4",
+      "jerseyNumber": 23
+    },
+    {
+      "playerId": "65f5e6f7g8h9i0j1k2l3m4n5",
+      "jerseyNumber": 23
+    },
+    {
+      "playerId": "65f6f7g8h9i0j1k2l3m4n5o6",
+      "jerseyNumber": 150
+    }
+  ]
+}
+```
+
+**Response:**
+```json
+{
+  "totalAssignments": 3,
+  "successfulAssignments": 1,
+  "failedAssignments": 2,
+  "addedPlayers": [
+    {
+      "id": "65f9i0j1k2l3m4n5o6p7q8r9",
+      "teamId": "65f2b3c4d5e6f7g8h9i0j1k2",
+      "playerId": "65f4d5e6f7g8h9i0j1k2l3m4",
+      "leagueId": "65f1a2b3c4d5e6f7g8h9i0j1",
+      "jerseyNumber": 23
+    }
+  ],
+  "errors": [
+    "Assignment at index 1: Jersey number 23 is already taken",
+    "Assignment at index 2: Jersey number must be between 0 and 99"
+  ]
 }
 ```
 

@@ -1,5 +1,7 @@
 package com.development.basketballleague.controller;
 
+import com.development.basketballleague.dto.BatchUploadPlayersRequest;
+import com.development.basketballleague.dto.BatchUploadPlayersResponse;
 import com.development.basketballleague.model.Player;
 import com.development.basketballleague.service.PlayerService;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +32,13 @@ public class PlayerController {
     @PostMapping
     public Player createPlayer(@Valid @RequestBody Player player) {
         return playerService.createPlayer(player);
+    }
+    
+    @PostMapping("/batch")
+    public ResponseEntity<BatchUploadPlayersResponse> batchUploadPlayers(
+            @Valid @RequestBody BatchUploadPlayersRequest request) {
+        BatchUploadPlayersResponse response = playerService.batchUploadPlayers(request);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
